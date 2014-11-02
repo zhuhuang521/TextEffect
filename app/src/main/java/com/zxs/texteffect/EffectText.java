@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -16,50 +17,65 @@ import android.widget.TextView;
 public class EffectText extends TextView{
 
     private Bitmap mTemBitmap;
+    private Canvas mTemcanvas;
 
-    private Paint paint;
-    private Paint textpaint;
+    private Paint mPaint;
+
     public EffectText(Context context) {
         this(context, null);
     }
 
     public EffectText(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        paint=new Paint();
-        paint.setTextSize(120);
-        textpaint=new Paint();
-        textpaint.setTextSize(80);
-        paint.setAntiAlias(true);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-        textpaint.setColor(Color.GREEN);
-    }
+        this(context, attrs, 0);
 
+
+    }
     public EffectText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        mPaint=new Paint();
+        mPaint.setColor(Color.GREEN);
+        getPaint().setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+        mTemBitmap=Bitmap.createBitmap(1080,1920, Bitmap.Config.ARGB_8888);
+        mTemcanvas=new Canvas(mTemBitmap);
+        setBackgroundColor(0x00000000);
     }
+
+
 
     @Override
     protected void onDraw(Canvas canvas) {
-
-        super.onDraw(canvas);
-        canvas.drawColor(Color.TRANSPARENT);
-        //
-        Bitmap tembitmap=Bitmap.createBitmap(1000,800, Bitmap.Config.ARGB_8888);
-        Canvas temcanvas=new Canvas(tembitmap);
-        temcanvas.drawRect(0,0,1000,500,textpaint);
-        paint.setColor(Color.YELLOW);
-        //temcanvas.drawRect(0,0,100,200,paint);
-        temcanvas.drawText("Hello word",100,100,paint);
-        canvas.drawBitmap(tembitmap,0f,100f,null);
+        mTemcanvas.drawRect(0,0,this.getWidth(),this.getHeight(),mPaint);
+        super.onDraw(mTemcanvas);
+        canvas.drawBitmap(mTemBitmap,0f,0f,null);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
     }
 
     @Override
-    public void setText(CharSequence text, BufferType type) {
-        super.setText(text, type);
+    public void setBackgroundColor(int color) {
+        //super.setBackgroundColor(0x00000000);
+        if(color!=0) {
+            mPaint.setColor(color);
+        }
+    }
+
+    @Override
+    public void setBackground(Drawable background) {
+        super.setBackground(null);
+    }
+
+    @Override
+    public void setBackgroundResource(int resid) {
+        super.setBackgroundResource(resid);
+
+    }
+
+    @Override
+    public void setBackgroundDrawable(Drawable background) {
+        super.setBackgroundDrawable(background);
     }
 }
