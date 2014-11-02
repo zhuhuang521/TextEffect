@@ -43,7 +43,7 @@ public class EffectText extends TextView{
 
         super.onDraw(canvas);
         canvas.drawColor(Color.TRANSPARENT);
-
+        //
         Bitmap tembitmap=Bitmap.createBitmap(1000,800, Bitmap.Config.ARGB_8888);
         Canvas temcanvas=new Canvas(tembitmap);
         temcanvas.drawRect(0,0,1000,500,textpaint);
